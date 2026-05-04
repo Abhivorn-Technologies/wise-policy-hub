@@ -1,10 +1,9 @@
 import { motion } from "framer-motion";
 import { ArrowRight, CheckCircle2, Phone } from "lucide-react";
+import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import heroImg from "@/assets/hero-illustration.jpg";
 import { telLink } from "@/lib/contact";
-
-const scrollTo = (id: string) => document.querySelector(id)?.scrollIntoView({ behavior: "smooth" });
 
 const Hero = () => {
   return (
@@ -44,8 +43,10 @@ const Hero = () => {
           </ul>
 
           <div className="flex flex-wrap gap-4">
-            <Button variant="hero" size="xl" onClick={() => scrollTo("#contact")}>
-              Get a Quote <ArrowRight className="w-4 h-4" />
+            <Button variant="hero" size="xl" asChild>
+              <Link to="/contact">
+                Get a Quote <ArrowRight className="w-4 h-4" />
+              </Link>
             </Button>
             <Button variant="outline" size="xl" asChild className="rounded-full border-2 border-primary/20 hover:bg-primary/5">
               <a href={telLink}>

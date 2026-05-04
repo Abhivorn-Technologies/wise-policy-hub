@@ -139,20 +139,6 @@ const Contact = () => {
           </motion.div>
         </div>
 
-        {/* Map placeholder */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="mt-8 rounded-3xl overflow-hidden border border-border/50 shadow-elegant aspect-[16/6] bg-card"
-        >
-          <iframe
-            title="Sree Insurance Services location"
-            src="https://www.openstreetmap.org/export/embed.html?bbox=77.58%2C12.96%2C77.62%2C12.99&layer=mapnik"
-            className="w-full h-full"
-            loading="lazy"
-          />
-        </motion.div>
       </div>
     </section>
   );
