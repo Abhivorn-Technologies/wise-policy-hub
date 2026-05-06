@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { ClipboardList, FileCheck2, HeadphonesIcon, Send, ShieldCheck } from "lucide-react";
+import { ClipboardList, FileCheck2, HeadphonesIcon, Mail, Send, ShieldCheck } from "lucide-react";
 import { useState } from "react";
 import { z } from "zod";
 import { Button } from "@/components/ui/button";
@@ -16,12 +16,17 @@ import {
 import { toast } from "@/hooks/use-toast";
 import useSeo from "@/hooks/use-seo";
 
+import emailjs from "@emailjs/browser";
+
 const POLICY_TYPES = [
   "Health Insurance",
   "Life Insurance",
-  "Motor Insurance",
-  "Business Insurance",
+  "Car Insurance",
+  "Bike Insurance",
+  "Commercial Vehicle Insurance",
+  "Home Insurance",
   "Travel Insurance",
+  "Business Insurance",
   "Other",
 ];
 
@@ -49,11 +54,15 @@ const STEPS = [
 ];
 
 const schema = z.object({
-  name: z.string().trim().min(2, "Name must be at least 2 characters").max(100),
-  phone: z.string().trim().regex(/^[+\d\s()-]{7,20}$/, "Enter a valid phone number"),
-  email: z.string().trim().email("Enter a valid email").max(200),
+  name: z.string()
+    .trim()
+    .min(2, "Name must be at least 2 characters")
+    .regex(/^[a-zA-Z\s]+$/, "Name can only contain alphabets and spaces"),
+  phone: z.string()
+    .trim()
+    .regex(/^(\+91\s)?\d{10}$/, "Enter a 10-digit number or '+91 ' followed by 10 digits"),
+  email: z.string().trim().email("Enter a valid email address"),
   policyType: z.string().min(1, "Select a policy type"),
-  policyNumber: z.string().trim().max(60).optional().or(z.literal("")),
   issue: z.string().trim().min(10, "Please describe your issue (10+ characters)").max(1500),
 });
 
@@ -71,7 +80,6 @@ const ClaimPage = () => {
     phone: "",
     email: "",
     policyType: "",
-    policyNumber: "",
     issue: "",
   });
   const [errors, setErrors] = useState<Partial<Record<keyof FormData, string>>>({});
@@ -83,7 +91,7 @@ const ClaimPage = () => {
       setData((d) => ({ ...d, [key]: e.target.value }));
     };
 
-  const onSubmit = (e: React.FormEvent) => {
+  const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const result = schema.safeParse(data);
     if (!result.success) {
@@ -96,8 +104,21 @@ const ClaimPage = () => {
     }
     setErrors({});
     setLoading(true);
-    setTimeout(() => {
-      setLoading(false);
+
+    try {
+      await emailjs.send(
+        import.meta.env.VITE_EMAILJS_SERVICE_ID,
+        import.meta.env.VITE_EMAILJS_CLAIMS_TEMPLATE_ID || import.meta.env.VITE_EMAILJS_TEMPLATE_ID,
+        {
+          name: data.name,
+          phone: data.phone,
+          email: data.email,
+          insurance_type: data.policyType, // Matches existing template key
+          message: data.issue,          // Maps issue to the {{message}} key
+        },
+        import.meta.env.VITE_EMAILJS_PUBLIC_KEY
+      );
+
       toast({
         title: "Claim request received",
         description: "Our claims team will contact you within 24 hours.",
@@ -107,10 +128,18 @@ const ClaimPage = () => {
         phone: "",
         email: "",
         policyType: "",
-        policyNumber: "",
         issue: "",
       });
-    }, 900);
+    } catch (error: any) {
+      console.error("EmailJS Claims Error:", error);
+      toast({
+        title: "Submission failed",
+        description: error?.text || "Something went wrong. Please try again or call us.",
+        variant: "destructive",
+      });
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -140,13 +169,101 @@ const ClaimPage = () => {
         </div>
       </section>
 
+      {/* Claim Help Section */}
+      <section className="py-20 lg:py-28 relative overflow-hidden">
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full bg-primary/5 blur-[120px] pointer-events-none" />
+        <div className="container mx-auto relative">
+          <div className="grid lg:grid-cols-12 gap-10 xl:gap-16 items-center">
+            {/* Left Content */}
+            <motion.div
+              initial={{ opacity: 0, x: -30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: false, amount: 0.2 }}
+              className="lg:col-span-7 xl:col-span-8 space-y-8"
+            >
+              <div className="max-w-4xl">
+                <span className="inline-block px-4 py-1.5 rounded-full bg-primary/10 text-primary text-sm font-bold tracking-wide mb-5">
+                  Direct Support
+                </span>
+                <h2 className="text-3xl sm:text-4xl lg:text-[2.75rem] xl:text-5xl font-extrabold leading-tight text-foreground whitespace-normal lg:whitespace-nowrap">
+                  Looking For <span className="gradient-text">Fast Claim Support?</span>
+                </h2>
+                <p className="mt-6 text-lg xl:text-xl text-muted-foreground leading-relaxed max-w-3xl">
+                  We offer simple and reliable claim support. No matter where your policy was purchased, our experts are here to navigate the complexity for you.
+                </p>
+              </div>
+
+              <div className="relative group rounded-[2.5rem] overflow-hidden shadow-elegant border border-border/50">
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-10" />
+                <img 
+                  src="https://images.unsplash.com/photo-1450101499163-c8848c66ca85?auto=format&fit=crop&q=80&w=1200&h=600" 
+                  alt="Claim Documentation" 
+                  className="w-full h-[300px] lg:h-[350px] object-cover transition-transform duration-700 group-hover:scale-105"
+                />
+                <div className="absolute bottom-8 left-8 z-20 opacity-0 group-hover:opacity-100 transition-opacity duration-500 text-white">
+                  <p className="text-sm font-bold uppercase tracking-widest">Expert documentation assistance</p>
+                </div>
+              </div>
+            </motion.div>
+
+            {/* Right Cards */}
+            <motion.div
+              initial={{ opacity: 0, x: 30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: false, amount: 0.2 }}
+              className="lg:col-span-5 xl:col-span-4 space-y-6 lg:mt-10"
+            >
+              <motion.a 
+                href="tel:+919876543210"
+                whileHover={{ y: -5 }}
+                className="group relative block p-8 rounded-[2rem] bg-card border border-border/50 shadow-elegant hover:shadow-glow hover:border-primary/40 transition-all duration-500 overflow-hidden"
+              >
+                <div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-full -mr-16 -mt-16 group-hover:bg-primary/10 transition-colors" />
+                <div className="relative flex items-center gap-6">
+                  <div className="w-16 h-16 rounded-2xl gradient-primary flex items-center justify-center text-white shadow-lg group-hover:scale-110 transition-smooth">
+                    <HeadphonesIcon className="w-8 h-8" />
+                  </div>
+                  <div>
+                    <h4 className="text-xs font-bold text-muted-foreground uppercase tracking-widest mb-1.5">Call Us</h4>
+                    <p className="text-[13px] sm:text-base font-bold group-hover:text-primary transition-colors">+91 98765 43210</p>
+                  </div>
+                </div>
+              </motion.a>
+
+              <motion.a 
+                href="mailto:claims@sreeinsurance.com"
+                whileHover={{ y: -5 }}
+                className="group relative block p-8 rounded-[2rem] bg-card border border-border/50 shadow-elegant hover:shadow-glow hover:border-primary/40 transition-all duration-500 overflow-hidden"
+              >
+                <div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-full -mr-16 -mt-16 group-hover:bg-primary/10 transition-colors" />
+                <div className="relative flex items-center gap-6">
+                  <div className="w-16 h-16 rounded-2xl bg-secondary flex items-center justify-center text-primary shadow-sm group-hover:scale-110 transition-smooth border border-primary/10">
+                    <Mail className="w-8 h-8" />
+                  </div>
+                  <div>
+                    <h4 className="text-xs font-bold text-muted-foreground uppercase tracking-widest mb-1.5">Email Support</h4>
+                    <p className="text-[13px] sm:text-base font-bold group-hover:text-primary transition-colors whitespace-nowrap">claims@sreeinsurance.com</p>
+                  </div>
+                </div>
+              </motion.a>
+
+              <div className="p-8 rounded-[2rem] bg-primary/5 border border-primary/10 backdrop-blur-sm">
+                <p className="text-sm text-muted-foreground italic leading-relaxed text-center">
+                  "Our dedicated claims manager will be assigned to your case within 24 hours of your request."
+                </p>
+              </div>
+            </motion.div>
+          </div>
+        </div>
+      </section>
+
       {/* Steps */}
       <section className="py-16 lg:py-20">
         <div className="container mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
+            viewport={{ once: false, amount: 0.2 }}
             className="text-center max-w-2xl mx-auto mb-12"
           >
             <span className="text-sm font-semibold uppercase tracking-widest text-primary">
@@ -163,7 +280,7 @@ const ClaimPage = () => {
                 key={s.title}
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
+                viewport={{ once: false, amount: 0.2 }}
                 transition={{ duration: 0.5, delay: i * 0.1 }}
                 className="relative p-7 rounded-3xl bg-card border border-border/50 shadow-elegant hover:shadow-glow hover:-translate-y-1 transition-smooth"
               >
@@ -188,7 +305,7 @@ const ClaimPage = () => {
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
+            viewport={{ once: false, amount: 0.2 }}
             className="text-center max-w-2xl mx-auto mb-12"
           >
             <span className="text-sm font-semibold uppercase tracking-widest text-primary">
@@ -205,7 +322,7 @@ const ClaimPage = () => {
           <motion.form
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
+            viewport={{ once: false, amount: 0.2 }}
             onSubmit={onSubmit}
             className="max-w-3xl mx-auto p-8 lg:p-10 rounded-3xl bg-card border border-border/50 shadow-elegant grid sm:grid-cols-2 gap-5"
           >
@@ -273,17 +390,6 @@ const ClaimPage = () => {
               {errors.policyType && (
                 <p className="mt-1 text-xs text-destructive">{errors.policyType}</p>
               )}
-            </div>
-            <div className="sm:col-span-2">
-              <Label htmlFor="claim-policy-number">Policy Number (optional)</Label>
-              <Input
-                id="claim-policy-number"
-                value={data.policyNumber}
-                onChange={update("policyNumber")}
-                placeholder="e.g. POL-1234567"
-                maxLength={60}
-                className="mt-1.5 h-12"
-              />
             </div>
             <div className="sm:col-span-2">
               <Label htmlFor="claim-issue">Describe the Issue</Label>

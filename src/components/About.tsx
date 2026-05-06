@@ -25,7 +25,7 @@ const About = () => (
       <motion.div
         initial={{ opacity: 0, y: 30 }}
         whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
+        viewport={{ once: false, amount: 0.2 }}
         transition={{ duration: 0.5 }}
       >
         <span className="text-sm font-semibold uppercase tracking-widest text-primary">About Us</span>
@@ -46,7 +46,7 @@ const About = () => (
             key={p.title}
             initial={{ opacity: 0, x: 30 }}
             whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
+            viewport={{ once: false, amount: 0.2 }}
             transition={{ duration: 0.5, delay: i * 0.1 }}
             className="flex gap-5 p-6 rounded-2xl bg-card shadow-elegant hover:shadow-glow hover:-translate-y-1 transition-smooth border border-border/50"
           >

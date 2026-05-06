@@ -1,18 +1,27 @@
-import { Facebook, Instagram, Linkedin, Mail, MapPin, Phone, Shield, Twitter } from "lucide-react";
+import { Facebook, Instagram, Linkedin, Mail, MapPin, Phone, Twitter } from "lucide-react";
 import { Link } from "react-router-dom";
 import { CONTACT, mailLink, telLink } from "@/lib/contact";
+import logo from "@/assets/logo.png";
 
 const links = [
   { label: "Home", to: "/" },
   { label: "About", to: "/about" },
   { label: "Services", to: "/services" },
-  { label: "Insurance Partners", to: "/partners" },
   { label: "Reviews", to: "/reviews" },
   { label: "Claim", to: "/claim" },
   { label: "Contact", to: "/contact" },
 ];
 
-const services = ["Health Insurance", "Life Insurance", "Motor Insurance", "Business Insurance"];
+const services = [
+  "Health Insurance",
+  "Life Insurance",
+  "Car Insurance",
+  "Bike Insurance",
+  "Commercial Vehicle Insurance",
+  "Home Insurance",
+  "Travel Insurance",
+  "Business Insurance",
+];
 
 const socials = [
   { icon: Facebook, href: "#", label: "Facebook" },
@@ -25,14 +34,12 @@ const Footer = () => (
   <footer className="bg-[hsl(260_45%_10%)] text-[hsl(270_30%_85%)] pt-16 pb-8">
     <div className="container mx-auto grid md:grid-cols-2 lg:grid-cols-4 gap-10">
       <div>
-        <div className="flex items-center gap-2 mb-4">
-          <div className="w-10 h-10 rounded-xl gradient-primary flex items-center justify-center">
-            <Shield className="w-5 h-5 text-primary-foreground" />
-          </div>
-          <div className="leading-tight">
-            <div className="font-bold text-lg text-white">Sree Insurance</div>
-            <div className="text-[10px] uppercase tracking-widest opacity-60">Services</div>
-          </div>
+        <div className="flex items-center gap-2 mb-6 group cursor-pointer w-fit">
+          <img 
+            src={logo} 
+            alt="Wise Policy Hub" 
+            className="h-20 w-auto object-contain brightness-0 invert opacity-80 transition-all duration-500 group-hover:brightness-100 group-hover:invert-0 group-hover:opacity-100 group-hover:scale-105" 
+          />
         </div>
         <p className="text-sm leading-relaxed opacity-75">
           Your trusted insurance partner — connecting you with India's top insurers for the perfect policy at the best price.
@@ -63,7 +70,15 @@ const Footer = () => (
         <h4 className="text-white font-semibold mb-4">Services</h4>
         <ul className="space-y-2 text-sm">
           {services.map((s) => (
-            <li key={s} className="opacity-75 hover:opacity-100 hover:text-primary-glow transition-smooth cursor-pointer">{s}</li>
+            <li key={s}>
+              <Link 
+                to="/services" 
+                onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+                className="opacity-75 hover:opacity-100 hover:text-primary-glow transition-smooth"
+              >
+                {s}
+              </Link>
+            </li>
           ))}
         </ul>
       </div>
@@ -88,7 +103,11 @@ const Footer = () => (
     </div>
 
     <div className="container mx-auto mt-12 pt-6 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs opacity-70">
-      <div>© {new Date().getFullYear()} Sree Insurance Services. All rights reserved.</div>
+      <div className="flex flex-col sm:flex-row items-center gap-1 sm:gap-2">
+        <span>© {new Date().getFullYear()} Sree Insurance Services. All rights reserved.</span>
+        <span className="hidden sm:inline opacity-30">|</span>
+        <span>Developed by <a href="https://abhivorn.com" target="_blank" rel="noopener noreferrer" className="text-white hover:text-primary-glow transition-smooth font-medium">Abhivorn Technologies</a></span>
+      </div>
       <div className="flex gap-5">
         <a href="#" className="hover:text-primary-glow transition-smooth">Privacy Policy</a>
         <a href="#" className="hover:text-primary-glow transition-smooth">Terms of Service</a>
