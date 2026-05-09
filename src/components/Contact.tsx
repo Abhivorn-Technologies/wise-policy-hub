@@ -130,7 +130,7 @@ const Contact = () => {
               </div>
               <div>
                 <Label htmlFor="phone">Phone Number</Label>
-                <Input id="phone" type="tel" value={data.phone} onChange={(e) => update("phone")(e.target.value)} placeholder="+91 98765 43210" maxLength={20} className="mt-1.5 h-12" />
+                <Input id="phone" type="tel" value={data.phone} onChange={(e) => update("phone")(e.target.value)} placeholder={CONTACT.phoneDisplay} maxLength={20} className="mt-1.5 h-12" />
                 {errors.phone && <p className="mt-1 text-xs text-destructive">{errors.phone}</p>}
               </div>
               <div>

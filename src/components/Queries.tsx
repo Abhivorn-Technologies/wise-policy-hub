@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import { MessageSquare, Phone, Send } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
+import { CONTACT } from "@/lib/contact";
 
 const Queries = () => {
   return (
@@ -33,7 +34,7 @@ const Queries = () => {
                 <div className="w-9 h-9 rounded-full bg-white/10 flex items-center justify-center">
                   <Phone className="w-4 h-4" />
                 </div>
-                <span className="font-semibold text-sm sm:text-base">+91 98765 43210</span>
+                <span className="font-semibold text-sm sm:text-base">{CONTACT.phoneDisplay}</span>
               </div>
             </motion.div>
 

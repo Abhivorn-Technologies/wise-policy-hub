@@ -15,6 +15,7 @@ import {
 } from "@/components/ui/select";
 import { toast } from "@/hooks/use-toast";
 import useSeo from "@/hooks/use-seo";
+import { CONTACT, telLink } from "@/lib/contact";
 
 import emailjs from "@emailjs/browser";
 
@@ -214,7 +215,7 @@ const ClaimPage = () => {
               className="lg:col-span-5 xl:col-span-4 space-y-6 lg:mt-10"
             >
               <motion.a 
-                href="tel:+919876543210"
+                href={telLink}
                 whileHover={{ y: -5 }}
                 className="group relative block p-8 rounded-[2rem] bg-card border border-border/50 shadow-elegant hover:shadow-glow hover:border-primary/40 transition-all duration-500 overflow-hidden"
               >
@@ -225,7 +226,7 @@ const ClaimPage = () => {
                   </div>
                   <div>
                     <h4 className="text-xs font-bold text-muted-foreground uppercase tracking-widest mb-1.5">Call Us</h4>
-                    <p className="text-[13px] sm:text-base font-bold group-hover:text-primary transition-colors">+91 98765 43210</p>
+                    <p className="text-[13px] sm:text-base font-bold group-hover:text-primary transition-colors">{CONTACT.phoneDisplay}</p>
                   </div>
                 </div>
               </motion.a>
@@ -347,7 +348,7 @@ const ClaimPage = () => {
                 type="tel"
                 value={data.phone}
                 onChange={update("phone")}
-                placeholder="+91 98765 43210"
+                placeholder={CONTACT.phoneDisplay}
                 maxLength={20}
                 className="mt-1.5 h-12"
               />
