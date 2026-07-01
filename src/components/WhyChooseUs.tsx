@@ -9,12 +9,12 @@ const benefits = [
 ];
 
 const WhyChooseUs = () => (
-  <section className="py-20 lg:py-28">
+  <section className="pt-20 lg:pt-28 pb-12 lg:pb-16">
     <div className="container mx-auto">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
+        viewport={{ once: false, amount: 0.2 }}
         className="text-center max-w-2xl mx-auto mb-14"
       >
         <span className="text-sm font-semibold uppercase tracking-widest text-primary">Why Choose Us</span>
@@ -29,7 +29,7 @@ const WhyChooseUs = () => (
             key={b.title}
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
+            viewport={{ once: false, amount: 0.2 }}
             transition={{ duration: 0.5, delay: i * 0.1 }}
             className="group text-center p-7 rounded-3xl bg-card border border-border/50 hover:border-primary/30 hover:shadow-glow transition-smooth"
           >

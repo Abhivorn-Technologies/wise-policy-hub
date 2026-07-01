@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react";
 import { Link, NavLink, useLocation } from "react-router-dom";
-import { Menu, Shield, X } from "lucide-react";
+import { Menu, X } from "lucide-react";
 import { cn } from "@/lib/utils";
+import logo from "@/assets/logo.png";
 
 const NAV_LINKS = [
   { label: "Home", to: "/" },
   { label: "About", to: "/about" },
   { label: "Services", to: "/services" },
-  { label: "Insurance Partners", to: "/partners" },
   { label: "Reviews", to: "/reviews" },
   { label: "Claim", to: "/claim" },
   { label: "Contact", to: "/contact" },
@@ -37,15 +37,13 @@ const Navbar = () => {
         scrolled || open ? "bg-background/85 backdrop-blur-lg shadow-elegant" : "bg-transparent"
       )}
     >
-      <nav className="container mx-auto flex items-center justify-between h-20">
-        <Link to="/" className="flex items-center gap-2 group">
-          <div className="w-10 h-10 rounded-xl gradient-primary flex items-center justify-center shadow-elegant group-hover:scale-110 transition-smooth">
-            <Shield className="w-5 h-5 text-primary-foreground" />
-          </div>
-          <div className="leading-tight">
-            <div className="font-bold text-lg gradient-text">Sree Insurance</div>
-            <div className="text-[10px] uppercase tracking-widest text-muted-foreground">Services</div>
-          </div>
+      <nav className="container mx-auto flex items-center justify-between h-24">
+        <Link to="/" className="flex items-center group h-full">
+          <img 
+            src={logo} 
+            alt="Wise Policy Hub" 
+            className="h-24 w-auto object-contain transition-smooth group-hover:scale-105" 
+          />
         </Link>
 
         <ul className="hidden lg:flex items-center gap-1">

@@ -2,15 +2,16 @@ import Hero from "@/components/Hero";
 import About from "@/components/About";
 import Services from "@/components/Services";
 import Partners from "@/components/Partners";
+import Stats from "@/components/Stats";
 import WhyChooseUs from "@/components/WhyChooseUs";
-import Reviews from "@/components/Reviews";
+import Queries from "@/components/Queries";
 import useSeo from "@/hooks/use-seo";
 
 const Index = () => {
   useSeo({
     title: "Sree Insurance Services — Your Trusted Insurance Partner",
     description:
-      "Compare and buy health, life, motor & business insurance from 15+ top insurers. Expert advice, best premiums, hassle-free claims.",
+      "Compare and buy health, life, car, bike, home, travel & business insurance from 15+ top insurers. Expert advice, best premiums, hassle-free claims.",
   });
 
   return (
@@ -19,8 +20,9 @@ const Index = () => {
       <About />
       <Services />
       <Partners />
+      <Stats />
       <WhyChooseUs />
-      <Reviews />
+      <Queries />
     </>
   );
 };

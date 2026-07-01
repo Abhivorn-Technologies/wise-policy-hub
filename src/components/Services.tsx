@@ -1,26 +1,58 @@
 import { motion } from "framer-motion";
-import { Briefcase, Car, Heart, HeartPulse, ArrowUpRight } from "lucide-react";
+import { Briefcase, Car, Heart, HeartPulse, ArrowUpRight, Truck, Bike, Home, Plane } from "lucide-react";
 
 const services = [
   {
+    id: "health-insurance",
     icon: HeartPulse,
     title: "Health Insurance",
     desc: "Comprehensive medical coverage for individuals and families with cashless hospitalization at 10,000+ network hospitals.",
     color: "from-pink-500 to-rose-500",
   },
   {
+    id: "life-insurance",
     icon: Heart,
     title: "Life Insurance",
     desc: "Secure your family's future with term plans, ULIPs, and savings policies tailored to your life goals.",
     color: "from-purple-500 to-indigo-500",
   },
   {
+    id: "car-insurance",
     icon: Car,
-    title: "Motor Insurance",
-    desc: "Protect your car, bike, or commercial vehicle with comprehensive policies and instant claim support.",
-    color: "from-violet-500 to-fuchsia-500",
+    title: "Car Insurance",
+    desc: "Keep your car protected against accidents, theft, and third-party liabilities with instant policy issuance.",
+    color: "from-blue-500 to-cyan-500",
   },
   {
+    id: "bike-insurance",
+    icon: Bike,
+    title: "Bike Insurance",
+    desc: "Comprehensive and third-party insurance for your two-wheeler with quick renewals and quick claims.",
+    color: "from-orange-500 to-amber-500",
+  },
+  {
+    id: "commercial-vehicle-insurance",
+    icon: Truck,
+    title: "Commercial Vehicle Insurance",
+    desc: "Specialized coverage for trucks, buses, and other commercial vehicles to keep your business moving.",
+    color: "from-emerald-500 to-teal-500",
+  },
+  {
+    id: "home-insurance",
+    icon: Home,
+    title: "Home Insurance",
+    desc: "Protect your home and its contents from natural calamities, fire, theft, and other unforeseen events.",
+    color: "from-sky-500 to-indigo-500",
+  },
+  {
+    id: "travel-insurance",
+    icon: Plane,
+    title: "Travel Insurance",
+    desc: "Stay worry-free during your international and domestic trips with medical and travel-related coverage.",
+    color: "from-cyan-500 to-blue-500",
+  },
+  {
+    id: "business-insurance",
     icon: Briefcase,
     title: "Business Insurance",
     desc: "Safeguard your business assets, employees, and operations with custom commercial insurance solutions.",
@@ -35,7 +67,7 @@ const Services = () => (
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
+        viewport={{ once: false, amount: 0.2 }}
         className="text-center max-w-2xl mx-auto mb-14"
       >
         <span className="text-sm font-semibold uppercase tracking-widest text-primary">Our Services</span>
@@ -51,9 +83,10 @@ const Services = () => (
         {services.map((s, i) => (
           <motion.article
             key={s.title}
+            id={s.id}
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
+            viewport={{ once: false, amount: 0.2 }}
             transition={{ duration: 0.5, delay: i * 0.1 }}
             className="group relative p-7 rounded-3xl bg-card border border-border/50 shadow-elegant hover:shadow-glow hover:-translate-y-2 transition-smooth overflow-hidden"
           >
